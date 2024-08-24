@@ -1,0 +1,109 @@
+.ol {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+  margin: 0;
+}
+
+.ol .list {
+}
+
+.ol .list .columnWrapper {
+  width: 272px;
+  border-radius: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  color: white;
+  padding: 0.8rem;
+}
+.ol .list .columnWrapper .listName {
+  font-size: 1.4rem;
+  padding-left: 1rem;
+}
+.ol .list .columnWrapper .addCard {
+  color: #9fadbc;
+  font-size: 1.4rem;
+  padding: 2rem 1.2rem 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ol .list .columnWrapper .addCard svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.ol .addOneLIst {
+  display: flex;
+  gap: 1rem;
+  padding: 1.2rem;
+  color: white;
+  background-color: #ffffff3d;
+  height: fit-content;
+  border-radius: 1.2rem;
+  font-size: 1.2rem;
+  width: 272px;
+  min-width: 270px;
+}
+.ol .addOneLIst svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.popup {
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #a1bdd914;
+}
+.popup .center {
+  display: flex;
+  justify-content: center;
+  padding-top: 10rem;
+}
+.popup .center .addNewColumnWrapper {
+  width: 46rem;
+  height: 40rem;
+  position: relative;
+  background-color: #22272b;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.popup .center .addNewColumnWrapper svg {
+  position: absolute;
+  right: 0;
+  margin-right: 2rem;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.popup .center .addNewColumnWrapper .addNewColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: white;
+  margin-top: 2rem;
+  > input {
+    height: 3rem;
+    font-size: 2rem;
+  }
+  > label {
+    font-size: 1.6rem;
+  }
+}
+.popup .center .addNewColumnWrapper .addNew {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.3rem;
+  width: fit-content;
+  background-color: #a1bdd914;
+  color: white;
+  font-size: 1.4rem;
+}
