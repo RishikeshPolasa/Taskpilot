@@ -58,7 +58,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: #a1bdd914;
+  background: rgba(0, 0, 0, 0.75);
 }
 .popup .center {
   display: flex;
@@ -107,3 +107,4 @@
   color: white;
   font-size: 1.4rem;
 }
+
