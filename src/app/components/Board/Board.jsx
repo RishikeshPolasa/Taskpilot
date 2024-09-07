@@ -3,13 +3,31 @@ import "./style.css";
 import Card from "./Card/Card";
 import PlusIcon from "../Icons/PlusIcon";
 import CloseIcon from "../Icons/CloseIcon";
+import NameIcon from "../Icons/NameIcon";
+import AddNewCard from "./AddNewCard/AddNewCard";
 function Board() {
   const [columns, setColumns] = useState({
-    ToDo: ["pagination", "item2"],
-    "In Progress": ["product name undefined"],
+    ToDo: [
+      {
+        id: "ToDo-1",
+        cardName: "Product not found",
+      },
+      {
+        id: "ToDo-2",
+        cardName: "Order return implement",
+      },
+    ],
+    "In Progress": [
+      {
+        id: "InProgress-1",
+        cardName: "product name undefined",
+      },
+    ],
   });
   const [popup, setPopup] = useState(false);
   const [columnName, setColumnName] = useState("");
+  const [addnewCardPopup, setAddNewCardPopup] = useState("");
+
   const handleChangeColumnName = (e) => {
     e.preventDefault();
     const val = e.target.value;
@@ -30,12 +48,14 @@ function Board() {
   };
 
   const onDrop = (e, toColumn) => {
-    const item = e.dataTransfer.getData("item");
+    const item = JSON.parse(e.dataTransfer.getData("item"));
     const fromColumn = e.dataTransfer.getData("fromColumn");
 
     if (toColumn === fromColumn) return;
-    const fromData = columns[fromColumn].filter((col) => col !== item);
+    const fromData = columns[fromColumn].filter((col) => col?.id !== item?.id);
+
     const toData = [...columns[toColumn], item];
+
     setColumns((prevCol) => ({
       ...prevCol,
       [fromColumn]: fromData,
@@ -48,15 +68,35 @@ function Board() {
   };
 
   const onDragStart = (e, item, column) => {
-    e.dataTransfer.setData("item", item);
+    e.dataTransfer.setData("item", JSON.stringify(item));
     e.dataTransfer.setData("fromColumn", column);
+  };
+
+  const handleAddnewCardPopup = (fromColumn) => {
+    setAddNewCardPopup(fromColumn);
+  };
+
+  const handleColumnsChange = (fromColumn, val) => {
+    const newVal = {
+      ...val,
+      id: `${fromColumn}-${columns[fromColumn].length + 1}`,
+    };
+
+    setColumns((prevCol) => ({
+      ...prevCol,
+      [fromColumn]: [...prevCol[fromColumn], newVal],
+    }));
+    closeAddNewCardPopup();
+  };
+
+  const closeAddNewCardPopup = () => {
+    setAddNewCardPopup("");
   };
 
   return (
     <div>
       <ol className="ol">
         {Object.entries(columns).map(([key, value]) => {
-          console.log("keyee", key, value);
           return (
             <li
               key={key}
@@ -69,7 +109,10 @@ function Board() {
                 <div>
                   <Card curKey={key} value={value} onDragStart={onDragStart} />
                 </div>
-                <div className="addCard">
+                <div
+                  onClick={() => handleAddnewCardPopup(key)}
+                  className="addCard"
+                >
                   <PlusIcon /> Add a card
                 </div>
               </div>
@@ -80,6 +123,17 @@ function Board() {
           <PlusIcon /> Add another list
         </div>
       </ol>
+      {addnewCardPopup && (
+        <div className="popup">
+          <div className="center">
+            <AddNewCard
+              fromColumn={addnewCardPopup}
+              handleColumnsChange={handleColumnsChange}
+              closeAddNewCardPopup={closeAddNewCardPopup}
+            />
+          </div>
+        </div>
+      )}
       {popup && (
         <div className="popup">
           <div className="center">

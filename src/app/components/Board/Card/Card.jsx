@@ -2,7 +2,6 @@ import React from "react";
 import "./style.css";
 function Card(props) {
   const { curKey, value, onDragStart } = props;
-  console.log("key", curKey, props);
   return (
     <>
       {value?.map((val) => {
@@ -15,7 +14,7 @@ function Card(props) {
             className="cardWrapper"
           >
             <div className="labels">{curKey}</div>
-            <div className="cardInfo">{val}</div>
+            <div className="cardInfo">{val?.cardName || val}</div>
           </div>
         );
       })}
