@@ -5,8 +5,10 @@ import "./style.css";
 import DescriptionIcon from "../../Icons/DescriptionIcon";
 
 function AddNewCard(props) {
-  const { fromColumn, handleColumnsChange, closeAddNewCardPopup } = props;
-  const [card, setCard] = useState({});
+  const { fromColumn, handleColumnsChange, closeAddNewCardPopup, editCard } =
+    props;
+
+  const [card, setCard] = useState(editCard || {});
   const handleCardChange = (e, name) => {
     const val = e.target.value;
     setCard((prevCard) => ({
@@ -14,7 +16,7 @@ function AddNewCard(props) {
       [name]: val,
     }));
   };
-
+  const isEdit = editCard ? true : false;
   return (
     <div className="addNewCardWrapper">
       <div className="cardNameAndCloseIcon">
@@ -23,7 +25,7 @@ function AddNewCard(props) {
           <div className="cardName">
             <input
               onChange={(e) => handleCardChange(e, "cardName")}
-              val={card?.name}
+              value={card?.cardName}
               placeholder="Enter the task name"
             />
             <p>
@@ -56,7 +58,7 @@ function AddNewCard(props) {
             <div className="buttons">
               <button
                 className="save"
-                onClick={() => handleColumnsChange(fromColumn, card)}
+                onClick={() => handleColumnsChange(fromColumn, card, isEdit)}
               >
                 Save
               </button>

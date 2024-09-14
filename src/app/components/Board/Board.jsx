@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import Card from "./Card/Card";
 import PlusIcon from "../Icons/PlusIcon";
@@ -27,7 +27,7 @@ function Board() {
   const [popup, setPopup] = useState(false);
   const [columnName, setColumnName] = useState("");
   const [addnewCardPopup, setAddNewCardPopup] = useState("");
-
+  const [editCard, setEditCard] = useState({});
   const handleChangeColumnName = (e) => {
     e.preventDefault();
     const val = e.target.value;
@@ -76,22 +76,51 @@ function Board() {
     setAddNewCardPopup(fromColumn);
   };
 
-  const handleColumnsChange = (fromColumn, val) => {
-    const newVal = {
-      ...val,
-      id: `${fromColumn}-${columns[fromColumn].length + 1}`,
-    };
+  const handleColumnsChange = (fromColumn, val, isEdit) => {
+    setColumns((prevCol) => {
+      const updatedColumns = { ...prevCol };
 
-    setColumns((prevCol) => ({
-      ...prevCol,
-      [fromColumn]: [...prevCol[fromColumn], newVal],
-    }));
+      if (isEdit) {
+        // Remove the existing card by filtering out the card with the matching ID
+        updatedColumns[fromColumn] = updatedColumns[fromColumn].filter(
+          (card) => card.id !== val.id
+        );
+        // Add the updated card back into the column
+        updatedColumns[fromColumn] = [...updatedColumns[fromColumn], val];
+      } else {
+        // Create a new card with a unique ID based on the column length
+        const newVal = {
+          ...val,
+          id: `${fromColumn}-${updatedColumns[fromColumn].length + 1}`,
+        };
+        // Add the new card to the column
+        updatedColumns[fromColumn] = [...updatedColumns[fromColumn], newVal];
+      }
+
+      return updatedColumns;
+    });
+
+    // Close the popup after changes are made
     closeAddNewCardPopup();
   };
 
   const closeAddNewCardPopup = () => {
     setAddNewCardPopup("");
   };
+
+  const handleEditCard = (val) => {
+    setEditCard(val);
+  };
+  useEffect(() => {
+    if (addnewCardPopup) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [addnewCardPopup]);
 
   return (
     <div>
@@ -104,10 +133,18 @@ function Board() {
               onDrop={(e) => onDrop(e, key)}
               onDragOver={onDragOver}
             >
-              <div className="columnWrapper">
+              <div
+                className="columnWrapper"
+                onClick={() => handleAddnewCardPopup(key)}
+              >
                 <div className="listName">{key}</div>
                 <div>
-                  <Card curKey={key} value={value} onDragStart={onDragStart} />
+                  <Card
+                    curKey={key}
+                    value={value}
+                    onDragStart={onDragStart}
+                    handleEditCard={handleEditCard}
+                  />
                 </div>
                 <div
                   onClick={() => handleAddnewCardPopup(key)}
@@ -130,6 +167,7 @@ function Board() {
               fromColumn={addnewCardPopup}
               handleColumnsChange={handleColumnsChange}
               closeAddNewCardPopup={closeAddNewCardPopup}
+              editCard={editCard}
             />
           </div>
         </div>

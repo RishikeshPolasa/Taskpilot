@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 function Card(props) {
-  const { curKey, value, onDragStart } = props;
+  const { curKey, value, onDragStart, handleEditCard } = props;
   return (
     <>
       {value?.map((val) => {
@@ -12,6 +12,7 @@ function Card(props) {
               onDragStart(e, val, curKey);
             }}
             className="cardWrapper"
+            onClick={() => handleEditCard(val)}
           >
             <div className="labels">{curKey}</div>
             <div className="cardInfo">{val?.cardName || val}</div>
