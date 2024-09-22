@@ -17,6 +17,7 @@ function AddNewCard(props) {
     }));
   };
   const isEdit = editCard ? true : false;
+
   return (
     <div className="addNewCardWrapper">
       <div className="cardNameAndCloseIcon">
