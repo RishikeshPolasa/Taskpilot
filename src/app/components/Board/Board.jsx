@@ -5,6 +5,8 @@ import PlusIcon from "../Icons/PlusIcon";
 import CloseIcon from "../Icons/CloseIcon";
 import NameIcon from "../Icons/NameIcon";
 import AddNewCard from "./AddNewCard/AddNewCard";
+import Notification from "../Notification/Notification";
+import useNotification from "@/hooks/useNotification";
 function Board() {
   const [columns, setColumns] = useState({
     ToDo: [
@@ -27,7 +29,9 @@ function Board() {
   const [popup, setPopup] = useState(false);
   const [columnName, setColumnName] = useState("");
   const [addnewCardPopup, setAddNewCardPopup] = useState("");
-  const [editCard, setEditCard] = useState({});
+  const [editCard, setEditCard] = useState(null);
+  const { NotificationComponent, triggerNotification } =
+    useNotification("bottom-right");
   const handleChangeColumnName = (e) => {
     e.preventDefault();
     const val = e.target.value;
@@ -41,6 +45,10 @@ function Board() {
     }));
     handlePopup();
     setColumnName("");
+    triggerNotification({
+      type: "Success",
+      message: "Successfully added new column",
+    });
   };
 
   const handlePopup = () => {
@@ -102,10 +110,16 @@ function Board() {
 
     // Close the popup after changes are made
     closeAddNewCardPopup();
+    triggerNotification({
+      type: isEdit ? "Info" : "Success",
+      message: isEdit ? "Edited the card" : "Added New Card",
+    });
+    setEditCard(null);
   };
 
   const closeAddNewCardPopup = () => {
     setAddNewCardPopup("");
+    setEditCard(null);
   };
 
   const handleEditCard = (val) => {
@@ -192,6 +206,7 @@ function Board() {
           </div>
         </div>
       )}
+      {NotificationComponent}
     </div>
   );
 }
